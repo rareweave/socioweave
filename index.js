@@ -15,7 +15,8 @@ global.databases = {
     transactionsContents: lmdb.open("./db/transactionsContents"),
     cursors: lmdb.open("./db/cursors"),
     indexes: lmdb.open("./db/indexes"),
-    commentCount: lmdb.open("./db/commentCount")
+    commentCount: lmdb.open("./db/commentCount"),
+    masters:lmdb.open("./db/masters")
 }
 global.arweave = Arweave.init(config.arweaveConfig)
 global.subaccounts = new arweaveSubaccounts(global.arweave, null, config.gateways.arweaveGql, config.gateways.arweaveGateway)
