@@ -217,22 +217,24 @@ module.exports.executeBundlrQuery = async function* (tags) {
         let cursor = await databases.cursors.get(module.exports.makeBundlrQueryHash(tags, bundlrGateway)) || null
         // console.log(cursor, await databases.cursors.get(module.exports.makeBundlrQueryHash(tags, bundlrGateway)))
         while (hasNextPage) {
-
+          // console.log(JSON.parse(module.exports.makeBundlrQuery(tags, cursor).body).query)
             let currentChunkResult = await fetch(bundlrGateway, module.exports.makeBundlrQuery(tags, cursor)).catch(e => {
                 // console.error(JSON.parse(module.exports.makeBundlrQuery(tags, cursor).body).query)
                 console.error(e)
                 return null
             }).then(res => res ? res.json() : null)
+       
             hasNextPage = currentChunkResult?.data?.transactions?.pageInfo?.hasNextPage
-            cursor = currentChunkResult?.data?.transactions?.edges?.at(-1)?.cursor || cursor
+           
             let resultPart = currentChunkResult?.data?.transactions?.edges
-            // console.log(currentChunkResult)
+            
             resultPart = resultPart ? resultPart.map(edge => {
                 return { ...edge.node, address: edge.node.address === "jnioZFibZSCcV8o-HkBXYPYEYNib4tqfexP0kCBXX_M" ? edge.node.tags.find(t => t.name == "Sequencer-Owner")?.value : edge.node.address, owner: { address: edge.node.address === "jnioZFibZSCcV8o-HkBXYPYEYNib4tqfexP0kCBXX_M" ? edge.node.tags.find(t => t.name == "Sequencer-Owner")?.value : edge.node.address }, quantity: { winston: "0" }, fee: { winston: "0" }, recipient: "", block: { timestamp: Math.round(edge.node.timestamp / 1000) }, bundled: true }
             }) : []
 
             yield* resultPart
-            await module.exports.wait(config.requestRelax)
+          await module.exports.wait(config.requestRelax)
+          cursor = currentChunkResult?.data?.transactions?.edges?.at(-1)?.cursor || cursor
             await databases.cursors.put(module.exports.makeBundlrQueryHash(tags, bundlrGateway), cursor)
         }
 
@@ -254,7 +256,7 @@ module.exports.fetchTxContent = async function (txId) {
 module.exports.fetchBundledTxContent = async function (txId) {
   let fromCache = await databases.transactionsContents.get(txId)
   if (fromCache) { return fromCache }
-  let fromGateway = await fetch(config.gateways.bundlrData + txId).catch(e => null).then(res => res ? res.arrayBuffer().catch(() => {
+  let fromGateway = await fetch(config.gateways.bundlrData+'tx/'+txId+'/data').catch(e => null).then(res => res ? res.arrayBuffer().catch(() => {
     consola.error(txId, "Failed to load", config.gateways.bundlrData + txId,)
     return null
   }) : null)

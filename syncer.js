@@ -10,8 +10,10 @@ module.exports = async function startSyncLoop() {
 
 async function sync() {
     for await (let transaction of (await executeBundlrQuery([["Data-Protocol", "Comment"]]))) {
+        
         if (!transaction.tags.find(t => t.name == "Content-Type") || !transaction.tags.find(t => t.name == "Data-Source")) { continue }
         let content = await fetchBundledTxContent(transaction.id)
+        console.log(transaction.id)
         if (!content || !content.length) { continue }
         if (transaction.tags.find(t => t.name == "Content-Type")?.value == "text/plain" && content.length <= 2000) {
             transaction.content = content
