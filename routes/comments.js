@@ -12,7 +12,7 @@ module.exports = fp(async function (app, opts) {
             let fetchedComments = await databases.transactions.getMany(index)
 
             fetchedComments = await Promise.all(fetchedComments.map(async (comment, i) => {
-                let masterAccount = (await subaccounts.fetchMaster(comment.address, "Comments").catch(e => comment.address)) || comment.address
+                let masterAccount = (await subaccounts.fetchMaster(comment.address, "Comments").catch(e => comment.address))?.address || comment.address
                 let arprofile = await Account.get(masterAccount)
                 return {
                     profile: arprofile,
