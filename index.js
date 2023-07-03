@@ -7,7 +7,8 @@ let ArProfile = require("arweave-account")
 let arweaveSubaccounts = require("arweave-subaccounts")
 const app = require('fastify')({ logger: true })
 let fs = require("fs")
-global.fetch=require("ofetch").fetch
+global.fetch = require("ofetch").fetch
+global.Headers=require("ofetch").Headers
 global.config = JSON5.parse(fs.readFileSync("./config.json5", "utf8"))
 global.databases = {
     transactions: lmdb.open("./db/transactions"),
