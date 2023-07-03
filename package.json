@@ -12,6 +12,7 @@
     "arweave": "^1.13.7",
     "arweave-account": "https://github.com/rareweave/arweave-account",
     "arweave-subaccounts": "https://github.com/rareweave/subaccounts",
+    "blake3": "^3.0.0",
     "consola": "^3.2.1",
     "fastify": "^4.18.0",
     "fastify-plugin": "^4.5.0",

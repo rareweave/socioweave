@@ -2,6 +2,19 @@
 # yarn lockfile v1
 
 
+"@c4312/blake3-internal@2.1.7":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@c4312/blake3-internal/-/blake3-internal-3.0.0.tgz#ed327913133d2e1874d6cb1af2c94dc3c1b6f9ec"
+  integrity sha512-USnabcn5uQDbEEryzjK4F3L7HVbMsWtqkTjDbZ/zyMp2vXwlOVnYZbn2WEGx+RmN84U5S1dTe1+RI0fKBWxQsA==
+
+"@c4312/blake3-native@2.1.7":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@c4312/blake3-native/-/blake3-native-3.0.0.tgz#b2de7ecac2783f8f04d936ad1544fc7a4a5035f7"
+  integrity sha512-DIabSQJ03G+wVQlO+BtWpVg5PXbfkuPfUJ4vVp26m4nMkpskNvZ8cTQAloim8oLRDBGV+X0YmE7kZXSNf/uqKQ==
+  dependencies:
+    "@c4312/blake3-internal" "2.1.7"
+    node-addon-api "^5.0.0"
+
 "@fastify/ajv-compiler@^3.5.0":
   version "3.5.0"
   resolved "https://registry.yarnpkg.com/@fastify/ajv-compiler/-/ajv-compiler-3.5.0.tgz#459bff00fefbf86c96ec30e62e933d2379e46670"
@@ -230,6 +243,22 @@ bignumber.js@^9.0.1, bignumber.js@^9.0.2:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/bignumber.js/-/bignumber.js-9.1.1.tgz#c4df7dc496bd849d4c9464344c1aa74228b4dac6"
   integrity sha512-pHm4LsMJ6lzgNGVfZHjMoO8sdoRhOzOH4MLmY65Jg70bpxCKu5iOHNJyfF6OyvYw7t8Fpf35RuzUyqnQsj8Vig==
+
+blake3-wasm@2.1.7:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/blake3-wasm/-/blake3-wasm-3.0.0.tgz#854d107b8357870b539cc9427baaaf407fdb9638"
+  integrity sha512-X410nN2AIX6k8gHQmXruQ9YV3U8fe7ZrfLMp88qBcGx5oEIGzz305HvquXoSTPdaR74EA99KHBTb8El9q0vjqQ==
+  dependencies:
+    "@c4312/blake3-internal" "2.1.7"
+
+blake3@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/blake3/-/blake3-3.0.0.tgz#67edcefd542622ce2d83dd3b77a57f3cbf54d3ea"
+  integrity sha512-59iHKatHHQHKYyzGUEZt4y2J3Pj1krKeFj3u+ALdugADLop9aLTRqd5oFc61sHeFtedvq/sNMD+nukco7NL8qA==
+  dependencies:
+    blake3-wasm "2.1.7"
+  optionalDependencies:
+    "@c4312/blake3-native" "2.1.7"
 
 blockweave@^1.0.17:
   version "1.0.18"
@@ -611,6 +640,11 @@ msgpackr@^1.9.5:
   integrity sha512-/IJ3cFSN6Ci3eG2wLhbFEL6GT63yEaoN/R5My2QkV6zro+OJaVRLPlwvxY7EtHYSmDlQpk8stvOQTL2qJFkDRg==
   optionalDependencies:
     msgpackr-extract "^3.0.2"
+
+node-addon-api@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/node-addon-api/-/node-addon-api-5.1.0.tgz#49da1ca055e109a23d537e9de43c09cca21eb762"
+  integrity sha512-eh0GgfEkpnoWDq+VY8OyvYhFEzBk6jIYbRKdIlyTiAXIVJ8PyBaKb0rp7oDtoddbdoHWhq8wwr+XZ81F1rpNdA==
 
 node-addon-api@^6.1.0:
   version "6.1.0"
