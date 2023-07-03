@@ -23,7 +23,7 @@ async function sync() {
         }
         let index = new Map(await databases.indexes.get(transaction.tags.find(t => t.name == "Data-Source").value))
         index.set(transaction.id, transaction.timestamp)
-        await databases.indexes.put(transaction.tags.find(t => t.name == "Data-Source").value, ([...index.entries()]).sort((a, b) => a[1] - b[1]))
+        await databases.indexes.put(transaction.tags.find(t => t.name == "Data-Source").value, ([...index.entries()]).sort((a, b) => b[1] - a[1]))
         await databases.commentCount.put(transaction.tags.find(t => t.name == "Data-Source").value, index.size)
         consola.info(`Downloaded comment ` + transaction.id + ` (Bundled), commented on: ` + transaction.tags.find(t => t.name == "Data-Source").value + `, by: ` + transaction.address)
 
@@ -42,7 +42,7 @@ async function sync() {
         }
         let index = new Map(await databases.indexes.get(transaction.tags.find(t => t.name == "Data-Source").value))
         index.set(transaction.id, transaction.timestamp)
-        await databases.indexes.put(transaction.tags.find(t => t.name == "Data-Source").value, ([...index.entries()]).sort((a, b) => a[1] - b[1]))
+        await databases.indexes.put(transaction.tags.find(t => t.name == "Data-Source").value, ([...index.entries()]).sort((a, b) => b[1] - a[1]))
 
         await databases.commentCount.put(transaction.tags.find(t => t.name == "Data-Source").value, index.size)
         consola.info(`Downloaded comment ` + transaction.id + ` (Base), commented on: ` + transaction.tags.find(t => t.name == "Data-Source").value + `, by: ` + transaction.address)
