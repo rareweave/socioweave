@@ -19,7 +19,7 @@ module.exports = fp(async function (app, opts) {
                         await databases.masters.put(comment.address,masterAccount)
                     }
                 }
-                console.log(masterAccount)
+
                 let arprofile = await Account.get(masterAccount)
                 return {
                     profile: arprofile,
