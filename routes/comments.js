@@ -17,6 +17,7 @@ module.exports = fp(async function (app, opts) {
                 return {
                     profile: arprofile,
                     uploaderAddress: comment.address,
+                    timestamp:comment.timestamp,
                     masterAccount: masterAccount || comment.address,
                     id: comment.id,
                     repliesCount: repliesCount[i] || 0,
