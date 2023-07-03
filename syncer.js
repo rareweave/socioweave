@@ -1,4 +1,4 @@
-let { executeTxQuery, executeBundlrQuery, wait, makeBundlrQuery, findTxById, fetchTxContent } = require("./utils.js")
+let { executeTxQuery, executeBundlrQuery, wait, makeBundlrQuery, findTxById, fetchTxContent, fetchBundledTxContent } = require("./utils.js")
 let consola = require("consola")
 let lmdb = require("lmdb")
 const { fetch } = require("ofetch")
@@ -11,7 +11,7 @@ module.exports = async function startSyncLoop() {
 async function sync() {
     for await (let transaction of (await executeBundlrQuery([["Data-Protocol", "Comment"]]))) {
         if (!transaction.tags.find(t => t.name == "Content-Type") || !transaction.tags.find(t => t.name == "Data-Source")) { continue }
-        let content = await fetchTxContent(transaction.id)
+        let content = await fetchBundledTxContent(transaction.id)
         if (!content || !content.length) { continue }
         if (transaction.tags.find(t => t.name == "Content-Type")?.value == "text/plain" && content.length <= 2000) {
             transaction.content = content

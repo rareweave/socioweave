@@ -7,6 +7,7 @@
     },
     gateways:{
         bundlr:["https://node1.bundlr.network/graphql","https://node2.bundlr.network/graphql"],
+        bundlrData:"https://gateway.bundlr.network/",
         arweaveGql:"https://arweave-search.goldsky.com/graphql",
         arweaveGateway:"https://g8way.io/"
     },

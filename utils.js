@@ -251,6 +251,19 @@ module.exports.fetchTxContent = async function (txId) {
         return Buffer.from(fromGateway)
     } else { return null }
 }
+module.exports.fetchBundledTxContent = async function (txId) {
+  let fromCache = await databases.transactionsContents.get(txId)
+  if (fromCache) { return fromCache }
+  let fromGateway = await fetch(config.gateways.bundlrData + txId).catch(e => null).then(res => res ? res.arrayBuffer().catch(() => {
+    consola.error(txId, "Failed to load", config.gateways.bundlrData + txId,)
+    return null
+  }) : null)
+
+  if (fromGateway) {
+    await databases.transactionsContents.put(txId, Buffer.from(fromGateway))
+    return Buffer.from(fromGateway)
+  } else { return null }
+}
 
 module.exports.wait = (ms) => {
     return new Promise(resolve => {
