@@ -2,11 +2,12 @@ const fp = require('fastify-plugin')
 let { fetchTxContent } = require("../utils.js")
 module.exports = fp(async function (app, opts) {
     app.get("/comments/:contentId", async (req, resp) => {
-
+        let start = req.query.start || 0
+        let amount = Math.min(req.query.amount || 20, 100)
         if (!await databases.commentCount.doesExist(req.params.contentId)) {
             return []
         } else {
-            let index = (await databases.indexes.get(req.params.contentId)).slice(0, 20).map(i => i[0])
+            let index = (await databases.indexes.get(req.params.contentId)).slice(start, start + amount).map(i => i[0])
             let repliesCount = await databases.commentCount.getMany(index)
             let fetchedComments = await databases.transactions.getMany(index)
 
