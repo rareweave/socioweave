@@ -1,0 +1,29 @@
+const fp = require('fastify-plugin')
+let { fetchTxContent } = require("../utils.js")
+module.exports = fp(async function (app, opts) {
+    app.get("/comments/:contentId", async (req, resp) => {
+
+        if (!await databases.commentCount.doesExist(req.params.contentId)) {
+            return []
+        } else {
+            let index = (await databases.indexes.get(req.params.contentId)).slice(0, 20).map(i => i[0])
+            let repliesCount = await databases.commentCount.getMany(index)
+            let fetchedComments = await databases.transactions.getMany(index)
+
+            fetchedComments = await Promise.all(fetchedComments.map(async (comment, i) => {
+                let masterAccount = (await subaccounts.fetchMaster(comment.address, "Comments").catch(e => comment.address)) || comment.address
+                let arprofile = await Account.get(masterAccount)
+                return {
+                    profile: arprofile,
+                    uploaderAddress: comment.address,
+                    masterAccount: masterAccount || comment.address,
+                    id: comment.id,
+                    repliesCount: repliesCount[i] || 0,
+                    contentType: comment.tags.find(t => t.name == "Content-Type")?.value
+                }
+            }))
+
+            return fetchedComments
+        }
+    })
+})
