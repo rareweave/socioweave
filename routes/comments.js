@@ -36,4 +36,19 @@ module.exports = fp(async function (app, opts) {
             return fetchedComments
         }
     })
+    app.get("/comment-stream/:contentId", async (req, resp) => {
+        if (!commentStreamListeners[req.params.contentId]) {
+            commentStreamListeners[req.params.contentId]=[]
+        }
+        commentStreamListeners[req.params.contentId].push({id:req.id,interface:resp})
+        resp.raw.writeHead(200, "OK", {
+            "Content-Type": "text/event-stream",
+            "Connection": "keep-alive",
+            "Cache-Control":"no-cache"
+        })
+        req.raw.on("close", () => {
+            global.commentStreamListeners[req.params.contentId] = commentStreamListeners[req.params.contentId].filter(connection=>connection.id!=req.id)
+        })
+        resp.raw.write(`event:connected`)
+    })
 })

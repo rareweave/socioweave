@@ -26,6 +26,32 @@ async function sync() {
         index.set(transaction.id, transaction.timestamp)
         await databases.indexes.put(transaction.tags.find(t => t.name == "Data-Source").value, ([...index.entries()]).sort((a, b) => b[1] - a[1]))
         await databases.commentCount.put(transaction.tags.find(t => t.name == "Data-Source").value, index.size)
+        let masterAccount = await databases.masters.get(transaction.owner.address);
+        if (!masterAccount) {
+            masterAccount = (await subaccounts.fetchMaster(transaction.owner.address, "Comments").catch(e => transaction.owner.address))?.address || transaction.owner.address
+            if (masterAccount != transaction.owner.address) {
+                await databases.masters.put(transaction.owner.address, masterAccount)
+            }
+        }
+
+        let arprofile = await Account.get(masterAccount)
+        let messageToSend= {
+            profile: arprofile,
+            uploaderAddress: transaction.owner.address,
+            content: (transaction.tags.find(t => t.name == "Content-Type")?.value == "text/plain" && content.length <= 2000) ? content.toString() : null,
+            timestamp: transaction.timestamp,
+            masterAccount: masterAccount || transaction.owner.address,
+            id: transaction.id,
+            repliesCount: 0,
+            contentType: transaction.tags.find(t => t.name == "Content-Type")?.value
+        }
+        if (global.commentStreamListeners[transaction.tags.find(t => t.name == "Data-Source").value]) {
+            global.commentStreamListeners[transaction.tags.find(t => t.name == "Data-Source").value].forEach(({ interface }) => {
+                interface.raw.write(`
+event: newMessage
+data: ${JSON.stringify(messageToSend)}`)
+            })
+        }
         consola.info(`Downloaded comment ` + transaction.id + ` (Bundled), commented on: ` + transaction.tags.find(t => t.name == "Data-Source").value + `, by: ` + transaction.address)
 
     }

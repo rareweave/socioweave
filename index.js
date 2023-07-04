@@ -20,7 +20,7 @@ global.databases = {
 }
 global.arweave = Arweave.init(config.arweaveConfig)
 global.subaccounts = new arweaveSubaccounts(global.arweave, null, config.gateways.arweaveGql, config.gateways.arweaveGateway)
-
+global.commentStreamListeners={}
 global.Account = new ArProfile.default({
     gateway: config.arweaveConfig,
     cacheIsActivated: true,
