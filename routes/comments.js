@@ -57,11 +57,11 @@ module.exports = fp(async function (app, opts) {
 event: connected
 data: connected
 `)
-        setInterval(() => {
-            resp.raw.write(`
-event: ping
-data: pong
-`)
-        },5000)
+//         setInterval(() => {
+//             resp.raw.write(`
+// event: ping
+// data: pong
+// `)
+//         },5000)
     })
 })
