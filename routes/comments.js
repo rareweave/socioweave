@@ -45,7 +45,10 @@ module.exports = fp(async function (app, opts) {
             "Content-Type": "text/event-stream",
             "Connection": "keep-alive",
             "Cache-Control": "no-cache",
-            "X-Accel-Buffering":"no"
+            "X-Accel-Buffering": "no",
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "*",
+            "Access-Control-Allow-Headers":"*"
         })
         req.raw.on("close", () => {
             global.commentStreamListeners[req.params.contentId] = commentStreamListeners[req.params.contentId].filter(connection=>connection.id!=req.id)
