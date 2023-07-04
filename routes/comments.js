@@ -53,12 +53,15 @@ module.exports = fp(async function (app, opts) {
         req.raw.on("close", () => {
             global.commentStreamListeners[req.params.contentId] = commentStreamListeners[req.params.contentId].filter(connection=>connection.id!=req.id)
         })
-        resp.raw.write(`event: connected
-data: connected`)
+        resp.raw.write(`
+event: connected
+data: connected
+`)
         setInterval(() => {
             resp.raw.write(`
-
-event: ping`)
+event: ping
+data: pong
+`)
         },5000)
     })
 })

@@ -48,7 +48,6 @@ async function sync() {
         if (global.commentStreamListeners[transaction.tags.find(t => t.name == "Data-Source").value]) {
             global.commentStreamListeners[transaction.tags.find(t => t.name == "Data-Source").value].forEach(({ interface }) => {
                 interface.raw.write(`
-
 event: newmessage
 data: ${JSON.stringify(messageToSend)}`)
             })
