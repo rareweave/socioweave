@@ -44,7 +44,8 @@ module.exports = fp(async function (app, opts) {
         resp.raw.writeHead(200, "OK", {
             "Content-Type": "text/event-stream",
             "Connection": "keep-alive",
-            "Cache-Control":"no-cache"
+            "Cache-Control": "no-cache",
+            "X-Accel-Buffering":"no"
         })
         req.raw.on("close", () => {
             global.commentStreamListeners[req.params.contentId] = commentStreamListeners[req.params.contentId].filter(connection=>connection.id!=req.id)
