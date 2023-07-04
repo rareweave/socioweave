@@ -56,6 +56,7 @@ module.exports = fp(async function (app, opts) {
         resp.raw.write(`
 event: connected
 data: connected
+
 `)
 //         setInterval(() => {
 //             resp.raw.write(`

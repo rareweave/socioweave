@@ -49,7 +49,8 @@ async function sync() {
             global.commentStreamListeners[transaction.tags.find(t => t.name == "Data-Source").value].forEach(({ interface }) => {
                 interface.raw.write(`
 event: newmessage
-data: ${JSON.stringify(messageToSend)}`)
+data: ${JSON.stringify(messageToSend)}
+`)
             })
         }
         consola.info(`Downloaded comment ` + transaction.id + ` (Bundled), commented on: ` + transaction.tags.find(t => t.name == "Data-Source").value + `, by: ` + transaction.address)
