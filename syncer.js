@@ -50,6 +50,7 @@ async function sync() {
                 interface.raw.write(`
 event: newmessage
 data: ${JSON.stringify(messageToSend)}
+
 `)
             })
         }
