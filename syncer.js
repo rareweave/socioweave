@@ -51,9 +51,19 @@ async function sync() {
 
 event: newMessage
 data: ${JSON.stringify(messageToSend)}
- 
+
 `)
             })
+            setTimeout(
+                () => {
+                    interface.raw.write(`
+
+event: ping
+data: pong
+
+`)
+                }
+                , 1000)
         }
         consola.info(`Downloaded comment ` + transaction.id + ` (Bundled), commented on: ` + transaction.tags.find(t => t.name == "Data-Source").value + `, by: ` + transaction.address)
 
