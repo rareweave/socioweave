@@ -56,7 +56,7 @@ data: ${JSON.stringify(messageToSend)}
             })
             setTimeout(
                 () => {
-                    if(!interface){return}
+                    if(typeof interface!='object'){return}
                     interface.raw.write(`
 
 event: ping
