@@ -25,6 +25,7 @@ module.exports = fp(async function (app, opts) {
             let content = Buffer.from(transaction.data, "base64")
             if (!content || !content.length) { return }
             transaction = {
+                id:transaction.id,
                 address: await arweave.wallets.ownerToAddress(transaction.owner),
                 owner: { address: transaction.address },
                 tags: transaction.tags,
