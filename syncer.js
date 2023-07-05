@@ -56,6 +56,7 @@ data: ${JSON.stringify(messageToSend)}
             })
             setTimeout(
                 () => {
+                    if(!interface){return}
                     interface.raw.write(`
 
 event: ping
@@ -69,6 +70,7 @@ data: pong
 
     }
     for await (let transaction of (await executeTxQuery(0, [["Data-Protocol", "Comment"]], true))) {
+        if (await databases.transactions.doesExist(transaction.id)) { return }
         if (!transaction.tags.find(t => t.name == "Content-Type") || !transaction.tags.find(t => t.name == "Data-Source")) { continue }
         let content = await fetchTxContent(transaction.id)
         if (!content || !content.length) { continue }
