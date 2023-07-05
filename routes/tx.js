@@ -22,11 +22,18 @@ module.exports = fp(async function (app, opts) {
             if (await databases.transactions.doesExist(bundlrResponse.id)){return}
             let transaction = new DataItem(req.body)
             if (!transaction) { return }
-            transaction.address = await arweave.wallets.ownerToAddress(transaction.owner)
-            transaction.owner={address:transaction.address}
-            if (!transaction.tags.find(t => t.name == "Content-Type") || !transaction.tags.find(t => t.name == "Data-Source")) { return }
-            let content = Buffer.from(transaction.data,"base64")
+            let content = Buffer.from(transaction.data, "base64")
             if (!content || !content.length) { return }
+            transaction = {
+                address: await arweave.wallets.ownerToAddress(transaction.owner),
+                owner: { address: transaction.address },
+                tags: transaction.tags,
+                bundled: true,
+                content: (transaction.tags.find(t => t.name == "Content-Type")?.value == "text/plain" && content.length <= 2000) ? content : null,
+                timestamp:bundlrResponse.timestamp
+            }
+            if (!transaction.tags.find(t => t.name == "Content-Type") || !transaction.tags.find(t => t.name == "Data-Source")) { return }
+          
             if (transaction.tags.find(t => t.name == "Content-Type")?.value == "text/plain" && content.length <= 2000) {
                 transaction.content = content
             }
